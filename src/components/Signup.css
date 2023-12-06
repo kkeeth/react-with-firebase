@@ -1,0 +1,48 @@
+.container {
+  width: 400px;
+  margin: 0 auto;
+  box-shadow: 0px 2px 1px -1px rgba(0, 0, 0, 0.2),
+    0px 1px 1px 0px rgba(0, 0, 0, 0.14), 0px 1px 3px 0px rgba(0, 0, 0, 0.12);
+  border-radius: 0.25rem;
+}
+.signup-btn {
+  width: 100%;
+  flex-grow: 1;
+}
+.signup-btn:hover {
+  color: #fff;
+  background-color: #f50057;
+  border: 1px solid #f50057;
+}
+.header {
+  text-align: center;
+  background: #212121;
+  color: #fff;
+  padding: 1rem;
+}
+.header h3 {
+  flex: 1 1 auto;
+  margin: 0;
+  line-height: 1.5;
+  font-size: 1.5rem;
+}
+.card {
+  margin-top: 1rem;
+}
+.card-content {
+  padding: 1rem;
+}
+.helper-text {
+  margin: 0.5rem 0 0 0;
+  color: #f44336;
+}
+input {
+  width: 100%;
+  padding: 6px 0 7px 8px;
+}
+.input-form {
+  margin-top: 1rem;
+}
+.button-root {
+  margin-top: 1rem;
+}

@@ -4,9 +4,7 @@ import Signup from "./Signup";
 const App = () => {
   return (
     <>
-      <div className="card">
-        <Signup />
-      </div>
+      <Signup />
     </>
   );
 };

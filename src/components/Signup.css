@@ -8,7 +8,7 @@
   width: 100%;
   flex-grow: 1;
 }
-.signup-btn:hover {
+.signup-btn:hover:enabled {
   color: #fff;
   background-color: #f50057;
   border: 1px solid #f50057;

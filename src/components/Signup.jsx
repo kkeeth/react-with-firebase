@@ -1,36 +1,6 @@
-import { useReducer, useEffect } from "react";
-// import { createStyles, makeStyles } from "@mui/material/styles";
-// import TextField from "@mui/material/TextField";
-// import Card from "@mui/material/Card";
-// import CardContent from "@mui/material/CardContent";
-// import CardActions from "@mui/material/CardActions";
-// import CardHeader from "@mui/material/CardHeader";
-// import Button from "@mui/material/Button";
-
+import { useReducer, useEffect, useState } from "react";
 import "./Signup.css";
-
-// const useStyles = makeStyles((theme) =>
-//   createStyles({
-//     container: {
-//       display: "flex",
-//       flexWrap: "wrap",
-//       width: 400,
-//       margin: `${theme.spacing(0)} auto`,
-//     },
-//     signupBtn: {
-//       marginTop: theme.spacing(2),
-//       flexGrow: 1,
-//     },
-//     header: {
-//       textAlign: "center",
-//       background: "#212121",
-//       color: "#fff",
-//     },
-//     card: {
-//       marginTop: theme.spacing(10),
-//     },
-//   })
-// );
+import { useAuth } from "../contexts/AuthContext";
 
 const initialState = {
   email: "",
@@ -87,6 +57,9 @@ const reducer = (state, action) => {
 
 const Signup = () => {
   const [state, dispatch] = useReducer(reducer, initialState);
+  const { signup } = useAuth();
+  const [error, setError] = useState("");
+  const [successMessage, setSuccessMessage] = useState("");
 
   useEffect(() => {
     if (
@@ -106,23 +79,67 @@ const Signup = () => {
     }
   }, [state.email, state.password, state.passwordconfirm]);
 
-  const handleSignup = () => {
-    if (state.email === "abc@email.com" && state.password === "password") {
+  const handleKeyPress = (event) => {
+    if (event.keyCode === 13 || event.which === 13) {
+      state.isButtonDisabled || handleSignup();
+    }
+  };
+
+  const handleSignup = async (event) => {
+    event.preventDefault();
+
+    try {
+      setError("");
+      setSuccessMessage("");
+      dispatch({
+        type: "setIsButtonDisabled",
+        payload: true,
+      });
+
+      await signup(state.email, state.passwordconfirm);
       dispatch({
         type: "signupSuccess",
         payload: "Signup Successfully",
       });
-    } else {
-      dispatch({
-        type: "signupFailed",
-        payload: "Incorrect email or password",
-      });
-    }
-  };
 
-  const handleKeyPress = (event) => {
-    if (event.keyCode === 13 || event.which === 13) {
-      state.isButtonDisabled || handleSignup();
+      dispatch({
+        type: "setIsButtonDisabled",
+        payload: false,
+      });
+      setSuccessMessage("アカウントの作成に成功しました");
+    } catch (e) {
+      console.log(e);
+
+      switch (e.code) {
+        case "auth/network-request-failed":
+          setError(
+            "通信がエラーになったのか、またはタイムアウトになりました。通信環境がいい所で再度やり直してください。"
+          );
+          break;
+        case "auth/weak-password":
+          setError("パスワードが短すぎます。6文字以上を入力してください。");
+          break;
+        case "auth/invalid-email":
+          setError("メールアドレスが正しくありません");
+          break;
+        case "auth/email-already-in-use":
+          setError(
+            "メールアドレスがすでに使用されています。ログインするか別のメールアドレスで作成してください"
+          );
+          break;
+        case "auth/user-disabled":
+          setError("入力されたメールアドレスは無効（BAN）になっています。");
+          break;
+        default:
+          setError(
+            "アカウントの作成に失敗しました。通信環境がいい所で再度やり直してください。"
+          );
+      }
+
+      dispatch({
+        type: "setIsButtonDisabled",
+        payload: false,
+      });
     }
   };
 
@@ -155,6 +172,10 @@ const Signup = () => {
         </div>
         <div className="card-content">
           <div className="input-form">
+            {error && <div className="helper-text">{error}</div>}
+            {successMessage && (
+              <div className="helper-text">{successMessage}</div>
+            )}
             <input
               id="email"
               type="email"

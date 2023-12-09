@@ -208,7 +208,7 @@ const Signup = () => {
             />
             {state.isError && <p className="helper-text">{state.helperText}</p>}
           </div>
-          もしアカウントがあるなら Log In
+          もしアカウントがあるなら Sign In
         </div>
         <div className="button-root">
           <button

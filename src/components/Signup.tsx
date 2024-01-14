@@ -1,6 +1,8 @@
 import { useReducer, useEffect, useState } from "react";
 import "./Signup.css";
 import { useAuth } from "../contexts/AuthContext";
+import { signInWithPopup } from "firebase/auth";
+import { auth } from "../firebase";
 
 const initialState = {
   email: "",
@@ -208,7 +210,10 @@ const Signup = () => {
             />
             {state.isError && <p className="helper-text">{state.helperText}</p>}
           </div>
-          もしアカウントがあるなら Sign In
+          もしアカウントがあるなら
+          <button onClick={() => signInWithPopup(auth, GAuthProvider)}>
+            Sign In
+          </button>
         </div>
         <div className="button-root">
           <button

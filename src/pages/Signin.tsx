@@ -45,52 +45,49 @@ const Signin: React.FC = () => {
         const credential = GoogleAuthProvider.credentialFromResult(result);
         const token = credential.accessToken;
         const user = result.user;
-        console.log(token, user);
       })
       .catch((error) => {
+        const credential = GoogleAuthProvider.credentialFromError(error);
+        console.log(error.code, error.message);
         // エラー処理
       });
   };
 
   return (
     <>
-      <form className="container" autoComplete="off">
-        <div className="card">
-          <div className="card-content">
-            <div className="input-form">
-              <input
-                id="email"
-                type="email"
-                placeholder="Email"
-                onChange={handleEmailChange}
-                value={email}
-              />
-            </div>
-            <div className="input-form">
-              <input
-                id="password"
-                type="password"
-                placeholder="Password"
-                onChange={handlePasswordChange}
-                value={password}
-              />
-            </div>
-            <div className="input-form">
-              <input
-                id="password-confirm"
-                type="password"
-                placeholder="Password-confirm"
-                onChange={handlePasswordConfirmChange}
-                value={passwordConfirm}
-              />
-            </div>
-          </div>
-          <div className="button-root">
-            <button onClick={signInWithEmail}>メールでログイン</button>
-            <button onClick={signInWithGoogle}>Google でログイン</button>
-          </div>
+      <div className="card-content">
+        <div className="input-form">
+          <input
+            id="email"
+            type="email"
+            placeholder="Email"
+            onChange={handleEmailChange}
+            value={email}
+          />
         </div>
-      </form>
+        <div className="input-form">
+          <input
+            id="password"
+            type="password"
+            placeholder="Password"
+            onChange={handlePasswordChange}
+            value={password}
+          />
+        </div>
+        <div className="input-form">
+          <input
+            id="password-confirm"
+            type="password"
+            placeholder="Password-confirm"
+            onChange={handlePasswordConfirmChange}
+            value={passwordConfirm}
+          />
+        </div>
+      </div>
+      <div className="button-root">
+        <button onClick={signInWithEmail}>メールでログイン</button>
+        <button onClick={signInWithGoogle}>Google でログイン</button>
+      </div>
     </>
   );
 };
